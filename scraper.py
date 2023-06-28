@@ -11,20 +11,21 @@ def get_recipe_ids(mealtype):
         for result in data['results']:
             ids.append(result['id'])
         pagenum=pagenum+1
-        print(pagenum)
+        print(f"{mealtype}, page {pagenum}")
         data = requests.get(URL+str(pagenum)).json()
     return ids
 
 mealtypes=["breakfast","brunch","lunch","dinner","dessert","snack"]
 recipeids={}
 for mealtype in mealtypes:
+    print("getting ids")
     recipeids[mealtype]=get_recipe_ids(mealtype)
 
 baseurl = "https://www.sidechef.com/recipes/"
 for mealtype in mealtypes:
     recipes=[]
     for recipeid in recipeids[mealtype]:
-        print(recipeid)
+        print(f"scraping {mealtype} ,recipe id: {recipeid}")
         page=requests.get(baseurl+str(recipeid))
         soup = BeautifulSoup(page.content,"html.parser")
         recipe={}
