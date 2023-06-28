@@ -27,6 +27,8 @@ for mealtype in mealtypes:
     for recipeid in recipeids[mealtype]:
         print(f"scraping {mealtype} ,recipe id: {recipeid}")
         page=requests.get(baseurl+str(recipeid))
+        if page.status_code != 200:
+            continue
         soup = BeautifulSoup(page.content,"html.parser")
         recipe={}
         if soup.find(class_="step-sequence step-placeholder body-1 rel"):           #skip incomplete recipes that redirect to other sites
