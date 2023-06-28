@@ -25,12 +25,13 @@ baseurl = "https://www.sidechef.com/recipes/"
 for mealtype in mealtypes:
     recipes=[]
     for recipeid in recipeids[mealtype]:
-        print(f"scraping {mealtype} ,recipe id: {recipeid}")
+        recipe={}
+        print(f"scraping {mealtype} recipe id: {recipeid}")
         page=requests.get(baseurl+str(recipeid))
         if page.status_code != 200:
             continue
         soup = BeautifulSoup(page.content,"html.parser")
-        recipe={}
+
         if soup.find(class_="step-sequence step-placeholder body-1 rel"):           #skip incomplete recipes that redirect to other sites
             continue
         recipe['title']=soup.find(class_="h1 text-center recipe-title").text.strip()
@@ -41,6 +42,8 @@ for mealtype in mealtypes:
         ratingdiv=soup.find(class_="ratings flex align-center")
         if ratingdiv:
             recipe['rating']=ratingdiv.find(class_="h3 rating-number").text.strip()
+        else:
+            recipe['rating']="unrated"
         recipe['totalTime']=soup.find(class_="tag-grid flex-1").find(class_="h3").text.strip()
         recipe['servings']=soup.find(class_="body-4 servings-text").text.strip()
         recipe['numIngredients']=soup.find(class_="recipe-tags caption-tag").text.strip().split(' ')[0]
