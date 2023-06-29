@@ -111,7 +111,7 @@ for mealtype in mealtypes:
         except:
             continue
 
-    with open(f'{mealtype}.json', 'w') as f:
+    with open(f'{len(recipes)}_{mealtype}_recipes_from_sidechef.json', 'w') as f:
         json.dump(recipes, f)
 
 
